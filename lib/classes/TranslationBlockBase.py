@@ -60,6 +60,6 @@ class TranslationBlockBase (object):
         if self.isChoice():
             return td._CONTEXT_CHOICE
         if self.isDialogue():
-            return "Dialogue"
+            return td._CONTEXT_DIALOGUE
         print ("Unrecognized context: " + str(self.contexts))
         return td._CONTEXT_NOT_FOUND
