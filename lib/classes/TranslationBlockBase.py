@@ -40,6 +40,9 @@ class TranslationBlockBase (object):
     def getCurrentContext (self):
         return td._CONTEXT_NOT_FOUND
 
+    def considerUnknownContext (self):
+        pass;
+
     def getBestContext (self):
         if self.isV2():
             return td._CONTEXT_V2
@@ -61,5 +64,5 @@ class TranslationBlockBase (object):
             return td._CONTEXT_CHOICE
         if self.isDialogue():
             return td._CONTEXT_DIALOGUE
-        print ("Unrecognized context: " + str(self.contexts))
+        #print ("Unrecognized context: " + str(self.contexts))
         return td._CONTEXT_NOT_FOUND

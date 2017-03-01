@@ -18,26 +18,31 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
         self.skipLine = isScripts
         self.position = position
         self.finished = 0
+        self.contextNotFound = False;
 
     def setUpValues (self):
         # Decides if this is translatable and/or if care has to be put when translating it
         self.skipLine = self.isScripts
         if self.isVocabulary() and self.options['translateScripts']:
             self.skipLine = 0
+
         if self.isInlineScript():
             if self.options['translateInlineScripts']:
                 self.skipLine = 0
                 self.carefully = 1
             else:
                 self.skipLine = 1
+
         if self.isGameTitle() or self.isSystem():
             self.carefully = 1
 
         if self.isSound():
             self.skipLine = 1
 
-        if self.options['angryContexts'] and self.getBestContext() == td._CONTEXT_NOT_FOUND:
-            self.skipLine = 1
+        if self.getBestContext() == td._CONTEXT_NOT_FOUND:
+            self.contextNotFound = True
+            if self.options['angryContexts']:
+                self.skipLine = 1
 
     def translate (self, x):
         # Generates translatedLines for later picking.
@@ -117,6 +122,10 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
     def getTranslatedLines (self):
         # This returns an array of strings with the translated block.
         return self.translatedLines
+
+    def considerUnknownContexts (self):
+        if self.contextNotFound:
+            print("Unknown context: %s" % ( str(self.contexts) ) );
 
     def addLine (self, line):
         # Adds a line to the block. It'll interpret it on it's own. This only works if following RPGMakerTrans syntax

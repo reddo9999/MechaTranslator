@@ -47,9 +47,11 @@ def translateFile (filename, options, input, output, inputSemaphore, outputSemap
 
     ordered = sorted(output, key = lambda TranslationString : TranslationString.position)
 
+    unknownContexts = [];
     allLines = []
     for block in ordered:
-        allLines.extend(block.getTranslatedLines())
+        allLines.extend(block.getTranslatedLines(unknownContexts));
+        block.considerUnknownContext();
 
     with open(filename, "w", "utf-8") as file:
         file.write("\r\n".join(allLines))
