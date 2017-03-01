@@ -12,7 +12,7 @@ class TranslationOptions(object):
         self.maxLength = 42
         self.translateScripts = True
         self.translateActors = True
-        self.translateInlineScripts = False
+        self.translateInlineScripts = True
         self.maxLengthItems = 42
         self.keepEmptyLines = True
         self.angryContexts = True
@@ -25,10 +25,10 @@ class TranslationOptions(object):
             d[c] = self.__getattribute__(c)
 
     def askOptions (self):
-        if input("Use default settings? (Y/N): ").lower() != "n":
-            return
         if self.isRPGMakerMV():
             self.mvAddWrapPlugin = input("Add Word Wrap plugin automatically? (Y/N): ").lower() != "n"
+            return
+        if input("Use default settings? (Y/N): ").lower() != "n":
             return
         print("MechaTranslator can restrict itself to translating only known contexts (to avoid errors).")
         self.angryContexts = input("Translate unknown/unhandled contexts? (Y/N): ").lower() == "y"
