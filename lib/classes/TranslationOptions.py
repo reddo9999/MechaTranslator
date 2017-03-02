@@ -23,6 +23,9 @@ class TranslationOptions(object):
 
     def askOptions (self):
         # Asks user to set up translation options
+        # Set Default options
+        if self.isWolf():
+            self.maxLength = 60;
         if self.isRPGMakerMV():
             self.mvAddWrapPlugin = input("Add Word Wrap plugin automatically? (Y/N): ").lower() != "n"
             return
