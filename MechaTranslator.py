@@ -73,10 +73,11 @@ if __name__ == '__main__':
     print ("Translating " + str(totalFiles) + " files.")
     start_time = time()
     unknownContexts = []
+    characterCount = 0
     if options.isWolf() or options.isRPGMakerTrans() or options.isRPGMakerV2():
         current = 1
         for f in files:
-            fileTranslator.translateFile(f, optionsDict, inputList, output, inputSemaphore, outputSemaphore, current, totalFiles, unknownContexts)
+            characterCount += fileTranslator.translateFile(f, optionsDict, inputList, output, inputSemaphore, outputSemaphore, current, totalFiles, unknownContexts)
             current += 1
     elif options.isRPGMakerMV():
         current = 1
@@ -97,6 +98,8 @@ if __name__ == '__main__':
 
     end_time = time()
 
+    print("Translated " + str(characterCount) + " characters in " + (str(round(end_time - start_time))) + " seconds.")
+
     if len(unknownContexts) > 0:
         if input(str(len(unknownContexts)) + " blocks had unknown contexts. Save unknown contexts to file? (Y/N): ").lower() != "n":
             strings = []
@@ -107,5 +110,5 @@ if __name__ == '__main__':
                 f.write("\r\n\r\n".join(strings))
                 f.close()
 
-    input("Finished in " + (str(end_time - start_time)) + " seconds. Press Enter to exit.")
+    input("Press Enter to exit.")
     exit()

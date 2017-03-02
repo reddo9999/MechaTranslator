@@ -49,8 +49,15 @@ def translateFile (filename, options, input, output, inputSemaphore, outputSemap
     ordered = sorted(output, key = lambda TranslationString : TranslationString.position)
 
     allLines = []
+    characterCount = 0
     for block in ordered:
         allLines.extend(block.getTranslatedLines())
+        if block.skipLine == 0:
+            for string in block.strings:
+                string.createSymbols() # Probably some multiprocessing issue, but Symbols do not get stored after translation
+                for symbol in string.translations:
+                    if symbol.translatable:
+                        characterCount += len(symbol.text)
         if block.contextNotFound:
             unknownContexts.append(block)
 
@@ -60,3 +67,5 @@ def translateFile (filename, options, input, output, inputSemaphore, outputSemap
         file.close()
 
     del output[:]
+
+    return characterCount
