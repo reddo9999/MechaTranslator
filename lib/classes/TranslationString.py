@@ -1,3 +1,5 @@
+import re
+
 from .TranslationSymbol import TranslationSymbol
 
 class TranslationString (object):
@@ -48,7 +50,7 @@ class TranslationString (object):
         self.translated = translated
         return translated
 
-    def createSymbols (self):
+    def createSymbols(self):
         open = 0
         index = 0
         start = -1
@@ -63,18 +65,30 @@ class TranslationString (object):
                         self.line = self.line[index + 1:]
                         index = -1
                     elif self.line[index] in self.symbols:
-                        self.translations.append(TranslationSymbol(self.line[:index], 1))
-                        self.translations.append(TranslationSymbol(self.line[index], 0))
-                        self.line = self.line[index + 1:]
-                        index = -1
+                        if self.line[index] == "\\" and self.line[index + 1] == '\\':
+                            funMatch = re.search(r"[a-z\d]+\[[\S]+\]", self.line)
+                            if funMatch:
+                                self.translations.append(TranslationSymbol(self.line[:funMatch.end()], 0))
+
+                                self.line = self.line[funMatch.end():]
+
+                                index = -1
+                        else:
+                            self.translations.append(TranslationSymbol(self.line[:index], 1))
+                            self.translations.append(TranslationSymbol(self.line[index], 0))
+                            self.line = self.line[index + 1:]
+                            index = -1
                     elif (self.line[index] == "\\" and (self.line[index + 1] == '\\' or self.line[index+1] == '>')):
                         start = index
                         index+= 1
-                    elif self.line[index] == "%" and (index + 1) < len(self.line) and self.line[index + 1] in "s0123456789":
-                        self.translations.append(TranslationSymbol(self.line[:index], 1))
-                        self.translations.append(TranslationSymbol(" %" + self.line[index + 1] + " ", 0))
-                        self.line = self.line[index + 2:]
-                        index = -1
+                    elif self.line[index] in "%@" and (index + 1) < len(self.line):
+                        varMatch = re.search(r"[%@][\ds]+", self.line)
+                        if varMatch:
+                            self.translations.append(TranslationSymbol(self.line[:varMatch.end()], 0))
+
+                            self.line = self.line[varMatch.end():]
+
+                            index = -1
                 except Exception as e:
                     self.translations.append(TranslationSymbol(self.line[:index], 1))
                     self.translations.append(TranslationSymbol(self.line[index], 0))
