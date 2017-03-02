@@ -3,6 +3,8 @@ from . import TranslationDictionary as td
 class TranslationBlockBase (object):
     def __init__(self):
         self.contexts = []
+        self.originalStrings = []
+        self.contextNotFound = False
 
     def translate (self, x):
         pass
@@ -65,4 +67,5 @@ class TranslationBlockBase (object):
         if self.isDialogue():
             return td._CONTEXT_DIALOGUE
         #print ("Unrecognized context: " + str(self.contexts))
+        self.contextNotFound = True
         return td._CONTEXT_NOT_FOUND
