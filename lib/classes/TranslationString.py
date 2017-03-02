@@ -27,7 +27,8 @@ class TranslationString (object):
         # Returns this string translated.
         if self.carefully and not self.skip:
             lower = self.text.lower()
-            if lower.find(".png") != -1 or lower.find(".jpg") != -1 or lower.find(".jpeg") != -1 or lower.find(".gif") != -1 or lower.find(".bmp") != -1:
+            if lower.find(".png") != -1 or lower.find(".jpg") != -1 or lower.find(".jpeg") != -1 or lower.find(".gif") != -1 or lower.find(".bmp") != -1 \
+                    or lower.find(".ogg") != -1or lower.find(".mp3") != -1 or lower.find(".m4a") != -1 or lower.find(".mid") != -1 or lower.find(".midi") != -1:
                 self.skip = 1
         if self.skip:
             return self.text
