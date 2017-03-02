@@ -13,6 +13,7 @@ from lib import fileTranslator
 from lib import fileTranslatorMV
 from lib import MVPlugin
 from time import sleep, time
+import sys
 
 def translationThread (threadNum, dictionary, inputList, outputList, inputSemaphore, outputSemaphore):
     dic = TranslationDictionary(dictionary)
@@ -70,10 +71,11 @@ if __name__ == '__main__':
     totalFiles = len(files)
     print ("Translating " + str(totalFiles) + " files.")
     start_time = time()
+    unknownContexts = []
     if options.isWolf() or options.isRPGMakerTrans() or options.isRPGMakerV2():
         current = 1
         for f in files:
-            fileTranslator.translateFile(f, optionsDict, inputList, output, inputSemaphore, outputSemaphore, current, totalFiles)
+            fileTranslator.translateFile(f, optionsDict, inputList, output, inputSemaphore, outputSemaphore, current, totalFiles, unknownContexts)
             current += 1
     elif options.isRPGMakerMV():
         current = 1
@@ -91,6 +93,15 @@ if __name__ == '__main__':
 
     for p in procs:
         p.terminate()
+
+    if len(unknownContexts) > 0:
+        print ("Printing contexts which were not found:")
+    for block in unknownContexts:
+        string = str(block.originalStrings) + " from " + str(block.contexts)
+        try:
+            print (string)
+        except:
+            print ("Original String not available from " + str(block.contexts))
 
     input("Finished in " + (str(time() - start_time)) + " seconds. Press Enter to exit.")
     exit()

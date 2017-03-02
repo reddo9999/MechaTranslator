@@ -1,11 +1,12 @@
 from os.path import basename
+import sys
 from codecs import open
 from .classes.TranslationBlockRPGMTrans import TranslationBlockRPGMTrans
 from .classes.TranslationBlockRPGMTransV2 import TranslationBlockRPGMTransV2
 from .classes import TranslationOptions
 from time import sleep
 
-def translateFile (filename, options, input, output, inputSemaphore, outputSemaphore, progress, total):
+def translateFile (filename, options, input, output, inputSemaphore, outputSemaphore, progress, total, unknownContexts):
     isScripts = basename(filename).find("Scripts") != -1
     isActors = basename(filename).find("Actors") != -1
     if isScripts and not options['translateScripts']:
@@ -50,7 +51,9 @@ def translateFile (filename, options, input, output, inputSemaphore, outputSemap
     allLines = []
     for block in ordered:
         allLines.extend(block.getTranslatedLines())
-        block.considerUnknownContext()
+        if block.contextNotFound:
+            unknownContexts.append(block)
+
 
     with open(filename, "w", "utf-8") as file:
         file.write("\r\n".join(allLines))
