@@ -18,7 +18,6 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
         self.skipLine = isScripts
         self.position = position
         self.finished = 0
-        self.contextNotFound = False;
 
     def setUpValues (self):
         # Decides if this is translatable and/or if care has to be put when translating it
@@ -40,7 +39,7 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
             self.skipLine = 1
 
         if self.getBestContext() == td._CONTEXT_NOT_FOUND:
-            self.contextNotFound = True
+            self.contextNotFound = True;
             if self.options['angryContexts']:
                 self.skipLine = 1
 
@@ -123,7 +122,7 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
         # This returns an array of strings with the translated block.
         return self.translatedLines
 
-    def considerUnknownContexts (self):
+    def considerUnknownContext (self):
         if self.contextNotFound:
             print("Unknown context: %s" % ( str(self.contexts) ) );
 
@@ -135,6 +134,7 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
             else:
                 if line.strip() != "" or self.options["keepEmptyLines"]:
                     self.strings.append(TranslationString(line, self))
+                    self.originalStrings.append(line)
                 self.initialLines.append(line)
         if not self.grabbingTranslations:
             if line == "> BEGIN STRING":
