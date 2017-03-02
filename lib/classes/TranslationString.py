@@ -75,6 +75,16 @@ class TranslationString (object):
                         # Start looking for a slash command
                         start = index
                         index+= 1
+                    elif self.line[index] == "\\":
+                        # This is a simple slash command like "\r" or "\t", sometimes used.
+                        self.translations.append(TranslationSymbol(self.line[:index], 1))
+                        if (index + 1) < len(self.line) and self.line[index + 1] in self.code:
+                            self.translations.append(TranslationSymbol("\\" + self.line[index + 1], 0))
+                            self.line = self.line[index + 2:]
+                        else:
+                            self.translations.append(TranslationSymbol("\\", 0))
+                            self.line = self.line[index + 1:]
+                        index = -1
                     elif self.line[index] == "%" and (index + 1) < len(self.line) and self.line[index + 1] in "s0123456789":
                         # In RPG Maker XP/VX/VX Ace, "%s" is used to be replaced in strings
                         # In RPG Maker MV, %0-%9 are also used.
