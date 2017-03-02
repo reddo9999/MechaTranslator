@@ -11,7 +11,7 @@ class TranslationString (object):
         self.skip = 0
         self.translations = []
         self.code = "abcdefghijklmnopqrstuvxzwyABCDEFGHIJKLMNOPQRSTUVXZWY(){}[]"
-        self.symbols = "\\…〚〘〖【《〈｛［〔（『[{(「〛〙〗】》〉｝］〕）』]})」><'\""
+        self.symbols = "…〚〘〖【《〈｛［〔（『[{(「〛〙〗】》〉｝］〕）』]})」><'\""
         self.validSlashers = "0123456789[]{}()\\abcdefghijklmnopqrstuvxzwyABCDEFGHIJKLMNOPQRSTUVXZWY!"
         self.sentenceFinishers = ".!?！？。,、"
 
