@@ -5,10 +5,6 @@ _RPGMAKERV2 = 3
 
 class TranslationOptions(object):
     def __init__ (self):
-        self.RPGMAKERTRANS = 0
-        self.WOLFTRANS = 1
-        self.RPGMAKERMV = 2
-        self.RPGMAKERV2 = 3
         self.maxLength = 42
         self.translateScripts = True
         self.translateActors = True
@@ -16,15 +12,17 @@ class TranslationOptions(object):
         self.maxLengthItems = 42
         self.keepEmptyLines = True
         self.angryContexts = True
-        self.type = self.RPGMAKERTRANS
+        self.type = _RPGMAKERTRANS
         self.mvAddWrapPlugin = True
 
     def updateTo (self, d):
+        # Updates dictionary d with self values
         a = [a for a in dir(self) if not a.startswith('__') and not callable(getattr(self,a))]
         for c in a:
             d[c] = self.__getattribute__(c)
 
     def askOptions (self):
+        # Asks user to set up translation options
         if self.isRPGMakerMV():
             self.mvAddWrapPlugin = input("Add Word Wrap plugin automatically? (Y/N): ").lower() != "n"
             return
@@ -53,25 +51,25 @@ class TranslationOptions(object):
             self.maxLengthItems = 52
 
     def setWolf (self):
-        self.type = self.WOLFTRANS
+        self.type = _WOLFTRANS
 
     def setRPGMakerTrans (self):
-        self.type = self.RPGMAKERTRANS
+        self.type = _RPGMAKERTRANS
 
     def setRPGMakerMV (self):
-        self.type = self.RPGMAKERMV
+        self.type = _RPGMAKERMV
 
     def isRPGMakerV2 (self):
-        return self.type == self.RPGMAKERV2
+        return self.type == _RPGMAKERV2
 
     def setRPGMakerV2 (self):
-        self.type = self.RPGMAKERV2
+        self.type = _RPGMAKERV2
 
     def isWolf (self):
-        return self.type == self.WOLFTRANS
+        return self.type == _WOLFTRANS
 
     def isRPGMakerTrans (self):
-        return self.type == self.RPGMAKERTRANS
+        return self.type == _RPGMAKERTRANS
 
     def isRPGMakerMV (self):
-        return self.type == self.RPGMAKERMV
+        return self.type == _RPGMAKERMV
