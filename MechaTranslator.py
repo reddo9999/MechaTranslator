@@ -12,7 +12,7 @@ from os.path import basename
 from lib import fileTranslator
 from lib import fileTranslatorMV
 from lib import MVPlugin
-from time import sleep
+from time import sleep, time
 
 def translationThread (threadNum, dictionary, inputList, outputList, inputSemaphore, outputSemaphore):
     dic = TranslationDictionary(dictionary)
@@ -37,14 +37,14 @@ if __name__ == '__main__':
     a = 1
     threads = cpu_count() * 5
     procs = []
-    input = manager.list()
+    inputList = manager.list()
     output = manager.list()
     inputSemaphore = manager.Semaphore(0)
     outputSemaphore = manager.Semaphore(0)
 
     try:
         while a <= threads:
-            p = Process(target=translationThread, args = (a, dic, input, output, inputSemaphore, outputSemaphore))
+            p = Process(target=translationThread, args = (a, dic, inputList, output, inputSemaphore, outputSemaphore))
             p.start()
             procs.append(p)
             a+=1
@@ -52,50 +52,45 @@ if __name__ == '__main__':
         print("Unable to start thread " + str(a) + ":" + str(e))
 
     file = fileLoader.getFile()
-    while file:
-        options = TranslationOptions()
-        options.askOptions()
+    options = TranslationOptions()
+    options.askOptions()
 
-        if basename(file) == "RPGMKTRANSPATCH":
-            options.setRPGMakerTrans()
-        elif basename(file) == "GameDat.txt":
-            options.setWolf()
-        elif basename(file) == "package.json":
-            options.setRPGMakerMV()
+    if basename(file) == "RPGMKTRANSPATCH":
+        options.setRPGMakerTrans()
+    elif basename(file) == "GameDat.txt":
+        options.setWolf()
+    elif basename(file) == "package.json":
+        options.setRPGMakerMV()
 
-        files = fileLoader.getFiles(file, options)
+    files = fileLoader.getFiles(file, options)
 
-        optionsDict = manager.dict()
-        options.updateTo(optionsDict)
+    optionsDict = manager.dict()
+    options.updateTo(optionsDict)
 
-        totalFiles = len(files)
-        print ("Translating " + str(totalFiles) + " files.")
-        if options.isWolf() or options.isRPGMakerTrans() or options.isRPGMakerV2():
-            current = 1
-            for f in files:
-                fileTranslator.translateFile(f, optionsDict, input, output, inputSemaphore, outputSemaphore, current, totalFiles)
-                current += 1
-        elif options.isRPGMakerMV():
-            current = 1
-            for f in files:
-                fileTranslatorMV.translateFile(f, optionsDict, input, output, inputSemaphore, outputSemaphore, current, totalFiles)
-                current +=1
-            if options.mvAddWrapPlugin:
-                print("Adding Word Wrap plugin by Dr.Yami.")
-                MVPlugin.addPlugin(file)
+    totalFiles = len(files)
+    print ("Translating " + str(totalFiles) + " files.")
+    start_time = time()
+    if options.isWolf() or options.isRPGMakerTrans() or options.isRPGMakerV2():
+        current = 1
+        for f in files:
+            fileTranslator.translateFile(f, optionsDict, inputList, output, inputSemaphore, outputSemaphore, current, totalFiles)
+            current += 1
+    elif options.isRPGMakerMV():
+        current = 1
+        for f in files:
+            fileTranslatorMV.translateFile(f, optionsDict, inputList, output, inputSemaphore, outputSemaphore, current, totalFiles)
+            current +=1
+        if options.mvAddWrapPlugin:
+            print("Adding Word Wrap plugin by Dr.Yami.")
+            MVPlugin.addPlugin(file)
 
-        try:
-            dictionaryLoader.saveDictionaries(dic)
-        except Exception as e:
-            print("Was unable to save old translations.")
-
-        break
-
-        file = fileLoader.getFile()
+    try:
+        dictionaryLoader.saveDictionaries(dic)
+    except Exception as e:
+        print("Was unable to save old translations.")
 
     for p in procs:
         p.terminate()
 
-    print("Finished. This window will close in 10 seconds. You can close it earlier if you want to.")
-    sleep(10)
+    input("Finished in " + (str(time() - start_time)) + " seconds. Press Enter to exit.")
     exit()
