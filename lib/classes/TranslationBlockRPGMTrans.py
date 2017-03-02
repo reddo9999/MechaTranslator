@@ -35,10 +35,11 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
         if self.isGameTitle() or self.isSystem():
             self.carefully = 1
 
-        if self.isSound():
+        if self.isUntranslatable():
             self.skipLine = 1
-
-        if self.getBestContext() == td._CONTEXT_NOT_FOUND:
+        elif self.isDangerous():
+            self.carefully = 1
+        elif self.getBestContext() == td._CONTEXT_NOT_FOUND:
             self.contextNotFound = True;
             if self.options['angryContexts']:
                 self.skipLine = 1
@@ -174,11 +175,17 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
         for c in self.contexts:
             if c.find("> CONTEXT: Actors") == 0 and c.find("/name/") != -1:
                 return True
+            #WOLF, Hero Name, Hero Title
+            if (c.find("主人公ステータス/") != -1 and c.find("キャラ名") != -1) or \
+                    (c.find("主人公ステータス/") != -1 and c.find("肩書き") != -1):
+                return True
         return False
 
     def isEnemyName (self):
         for c in self.contexts:
             if c.find("> CONTEXT: Enemies") == 0 and c.find("/name/") != -1:
+                return True
+            if c.find("敵ｷｬﾗ個体ﾃﾞｰﾀ/") != -1 and c.find("敵キャラ名") != -1: #WOLF
                 return True
         return False
 
@@ -204,6 +211,9 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
         for c in self.contexts:
             if c.find("> CONTEXT: Skills/") != -1 and c.find("/name/") != -1:
                 return True
+            # WOLF
+            if c.find("技能/") != -1 and c.find("技能の名前") != -1:
+                return True
         return False
 
     def isTroopsName (self):
@@ -215,6 +225,9 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
     def isStatesName (self):
         for c in self.contexts:
             if c.find("> CONTEXT: States/") != -1 and c.find("/name/") != -1:
+                return True
+            if (c.find("状態設定/") != -1 and c.find("状態名") != -1) or \
+                    (c.find("属性名の設定/") != -1 and c.find("属性名'") != -1) : #WOLF
                 return True
         return False
 
@@ -228,17 +241,26 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
         for c in self.contexts:
             if c.find("> CONTEXT: Skills") == 0 and c.find("/description/") != -1:
                 return True
+            if c.find("技能/") != -1 and c.find("説明") != -1: #WOLF
+                return True
         return False
 
     def isSkillMessage (self):
         for c in self.contexts:
             if c.find("> CONTEXT: Skills") == 0 and c.find("/message") != -1:
                 return True
+            if (c.find("技能/") != -1 and (c.find("使用時文章[戦闘](人名~") != -1 or c.find("失敗時文章[(対象)～") != -1)) or \
+                (c.find("状態設定/") != -1 and c.find("ｶｳﾝﾀｰ発動文[対象～") != -1): #WOLF
+                return True
         return False
 
     def isStatesMessage (self):
         for c in self.contexts:
             if c.find("> CONTEXT: States") == 0 and c.find("/message") != -1:
+                return True
+            if (c.find("状態設定/") != -1 and c.find("回復時の文章[(人名)～]") != -1) or \
+                    (c.find("状態設定/") != -1 and c.find("発生時の文章[(人名)～]") != -1) or \
+                    (c.find("状態設定/") != -1 and c.find("行動制限時文章(空欄:ﾅｼ") != -1): #WOLF
                 return True
         return False
 
@@ -248,6 +270,14 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
                 or (c.find("> CONTEXT: Items") == 0 and c.find("/name/") != -1)\
                     or (c.find("> CONTEXT: Weapons") == 0 and c.find("/name/") != -1):
                 return True
+            # WOLF
+            if (c.find("アイテム/") != -1 and c.find("アイテム名") != -1) or \
+                    (c.find("防具/") != -1 and c.find("防具の名前") != -1) or \
+                    (c.find("武器/") != -1 and c.find("武器の名前") != -1) or \
+                    (c.find("鍛冶師用DB/") != -1 and c.find("作る装備") != -1) or \
+                    (c.find("属性名の設定/") != -1 and c.find("属性名") != -1) or \
+                    (c.find("装備タイプ/") != -1 and c.find("装備タイプ名(剣･鎧など）") != -1):
+                return True
         return False
 
     def isItemDescription (self):
@@ -255,6 +285,10 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
             if (c.find("> CONTEXT: Armors") == 0 and c.find("/description/") != -1)\
                         or (c.find("> CONTEXT: Items") == 0 and c.find("/description/") != -1)\
                         or (c.find("> CONTEXT: Weapons") == 0 and c.find("/description/") != -1):
+                return True
+            if (c.find("アイテム/") != -1 and c.find("説明文[2行まで可]") != -1) or \
+                    (c.find("防具/") != -1 and c.find("防具の説明[2行まで可]") != -1) or \
+                    (c.find("武器/") != -1 and c.find("武器の説明[2行まで可]") != -1): #WOLF
                 return True
         return False
 
@@ -281,6 +315,16 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
         for c in self.contexts:
             if c.find("> CONTEXT: Scripts/Vocab/") == 0:
                 return True
+            # WOLF
+            if (c.find("戦闘コマンド/") != -1 and c.find("コマンド名'") != -1) or \
+                    (c.find("戦闘コマンド/") != -1 and c.find("コマンドの説明文") != -1) or \
+                    (c.find("戦闘コマンド/") != -1 and c.find("コマンド名") != -1) or \
+                    (c.find("用語設定/") != -1 and c.find("用語基本設定/") != -1) or \
+                    (c.find("基本ｼｽﾃﾑ用変数/") != -1 and c.find("文字列") != -1) or \
+                    (c.find("システム設定/") != -1 and c.find("特殊メニューA名称") != -1) or \
+                    (c.find("システム設定/") != -1 and c.find("[戦闘]敵逃走文 [対象～") != -1) or \
+                    (c.find("合成基本設定/") != -1):
+                return True
         if self.isSkillDescription() or self.isSkillMessage() or self.isStatesMessage():
             return True
         return False
@@ -297,6 +341,20 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
                     c.find("_se/name/") != -1 or c.find("_bgm/name/") != -1 or \
                     c.find("_me/name/") != -1:
                 return True
+        return False
+
+    def isUntranslatable (self):
+        if self.isSound():
+            return True
+        for c in self.contexts:
+            if (c.find("> CONTEXT") != -1 and c.find("/Picture") != -1) or \
+                    (c.find("> CONTEXT") != -1 and c.find("/SetString") != -1) or \
+                    (c.find("> CONTEXT") != -1 and c.find("/Database") != -1) or \
+                    (c.find("> CONTEXT") != -1 and c.find("/StringCondition") != -1):
+                return True
+        return False
+
+    def isDangerous (self):
         return False
 
     def isDescription(self):
