@@ -66,7 +66,7 @@ class TranslationString (object):
                         index = -1
                     elif self.line[index] in self.symbols:
                         if self.line[index] == "\\" and self.line[index + 1] == '\\':
-                            funMatch = re.search(r"[a-z+]\[[\d:]+\]", self.line)
+                            funMatch = re.search(r"[a-z\d]+\[[\S]+\]", self.line)
                             if funMatch:
                                 self.translations.append(TranslationSymbol(self.line[:funMatch.end()], 0))
 
