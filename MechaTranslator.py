@@ -9,6 +9,7 @@ from lib import dictionaryLoader, fileLoader
 from lib.classes.TranslationEngine import TranslationEngine
 from lib.classes.TranslationDictionary import TranslationDictionary
 from os.path import basename
+from os import path
 from lib import fileTranslator
 from lib import fileTranslatorMV
 from lib import MVPlugin
@@ -94,14 +95,17 @@ if __name__ == '__main__':
     for p in procs:
         p.terminate()
 
-    if len(unknownContexts) > 0:
-        print ("Printing contexts which were not found:")
-    for block in unknownContexts:
-        string = str(block.originalStrings) + " from " + str(block.contexts)
-        try:
-            print (string)
-        except:
-            print ("Original String not available from " + str(block.contexts))
+    end_time = time()
 
-    input("Finished in " + (str(time() - start_time)) + " seconds. Press Enter to exit.")
+    if len(unknownContexts) > 0:
+        if input(str(len(unknownContexts)) + " blocks had unknown contexts. Save unknown contexts to file? (Y/N): ").lower() != "n":
+            strings = []
+            for block in unknownContexts:
+                string = "Original Strings: " + str(block.originalStrings) + ":\r\n" + "Contexts: " + str(block.contexts)
+                strings.append(string)
+            with open(path.join(dictionaryLoader.dicFolder, ("UnknownContexts.txt")), "w", encoding="utf-8") as f:
+                f.write("\r\n\r\n".join(strings))
+                f.close()
+
+    input("Finished in " + (str(end_time - start_time)) + " seconds. Press Enter to exit.")
     exit()
