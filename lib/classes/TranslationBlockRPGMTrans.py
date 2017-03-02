@@ -244,17 +244,17 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
 
     def isItemName (self):
         for c in self.contexts:
-            if c.find("> CONTEXT: Armors") == 0 and c.find("/name/") != -1\
-                or c.find("> CONTEXT: Items") == 0 and c.find("/name/") != -1\
-                    or c.find("> CONTEXT: Weapons") == 0 and c.find("/name/") != -1:
+            if (c.find("> CONTEXT: Armors") == 0 and c.find("/name/") != -1)\
+                or (c.find("> CONTEXT: Items") == 0 and c.find("/name/") != -1)\
+                    or (c.find("> CONTEXT: Weapons") == 0 and c.find("/name/") != -1):
                 return True
         return False
 
     def isItemDescription (self):
         for c in self.contexts:
-            if c.find("> CONTEXT: Armors") == 0 and c.find("/description/") != -1\
-                        or c.find("> CONTEXT: Items") == 0 and c.find("/description/") != -1\
-                        or c.find("> CONTEXT: Weapons") == 0 and c.find("/description/") != -1:
+            if (c.find("> CONTEXT: Armors") == 0 and c.find("/description/") != -1)\
+                        or (c.find("> CONTEXT: Items") == 0 and c.find("/description/") != -1)\
+                        or (c.find("> CONTEXT: Weapons") == 0 and c.find("/description/") != -1):
                 return True
         return False
 
