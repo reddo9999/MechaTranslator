@@ -106,12 +106,20 @@ if __name__ == '__main__':
 
     if len(unknownContexts) > 0:
         if input(str(len(unknownContexts)) + " blocks had unknown contexts. Save unknown contexts to file? (Y/N): ").lower() != "n":
-            strings = []
+            contextDictionary = {}
             for block in unknownContexts:
-                string = "Original Strings: " + str(block.originalStrings) + ":\r\n" + "Contexts: " + str(block.contexts)
-                strings.append(string)
+                for c in block.contexts:
+                    if c not in contextDictionary:
+                        contextDictionary[c] = []
+                    contextDictionary[c].extend(block.originalStrings)
+            strings = []
+            for idx, val in contextDictionary.items():
+                strings.extend(val)
+                strings.append(idx)
+                strings.append("")
+                strings.append("")
             with open(path.join(dictionaryLoader.dicFolder, ("UnknownContexts.txt")), "w", encoding="utf-8") as f:
-                f.write("\r\n\r\n".join(strings))
+                f.write("\n".join(strings))
                 f.close()
 
     input("Press Enter to exit.")
