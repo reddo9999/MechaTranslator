@@ -58,8 +58,8 @@ class TranslationString (object):
                 try:
                     # Attempts to encode at cp932 - this is the encoding used by ATLAS, so any symbols unencodable need to be removed now
                     self.line[index].encode('cp932')
-
-                    if (self.line[index] in self.sentenceFinishers):
+                    if (self.line[index] in self.sentenceFinishers or self.line[index] == u"\u3000"):
+                        #\u3000 is causing errors on translations
                         # Split string into TranslationSymbol as sentences end
                         self.translations.append(TranslationSymbol(self.line[:(index)], 1))
                         self.translations.append(TranslationSymbol(self.line[index], 0))
