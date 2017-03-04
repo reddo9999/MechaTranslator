@@ -26,6 +26,10 @@ def translationThread (threadNum, dictionary, inputList, outputList, inputSemaph
             myBlock.translate(translationEngine)
         except Exception as e:
             print("Thread " + str(threadNum) + " failed to translate: " + str(e))
+            try:
+                print(myBlock.initialLines)
+            except:
+                pass
         outputList.append(myBlock)
         outputSemaphore.release()
 
@@ -37,7 +41,7 @@ if __name__ == '__main__':
     manager = Manager()
     dic = dictionaryLoader.getDictionaries(manager)
     a = 1
-    threads = cpu_count() * 5
+    threads = cpu_count() * 2
     procs = []
     inputList = manager.list()
     output = manager.list()
