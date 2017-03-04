@@ -106,6 +106,7 @@ if __name__ == '__main__':
 
     if len(unknownContexts) > 0:
         if input(str(len(unknownContexts)) + " blocks had unknown contexts. Save unknown contexts to file? (Y/N): ").lower() != "n":
+            folder = path.abspath(path.dirname(file))
             contextDictionary = {}
             for block in unknownContexts:
                 for c in block.contexts:
@@ -118,7 +119,7 @@ if __name__ == '__main__':
                 strings.append(idx)
                 strings.append("")
                 strings.append("")
-            with open(path.join(dictionaryLoader.dicFolder, ("UnknownContexts.txt")), "w", encoding="utf-8") as f:
+            with open(path.join(folder, ("UnknownContexts.txt")), "w", encoding="utf-8") as f:
                 f.write("\n".join(strings))
                 f.close()
 
