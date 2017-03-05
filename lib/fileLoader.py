@@ -29,7 +29,7 @@ def getFiles (file, options):
         newFilesCorrected = []
         i = 0
         while i < len(newFiles):
-            if newFiles[i].find(backupExt) == -1 and newFiles[i].find("RPGMKTRANSPATCH") == -1 and newFiles[i].find("UnknownContexts") != -1:
+            if newFiles[i].find(backupExt) == -1 and newFiles[i].find("RPGMKTRANSPATCH") == -1 and newFiles[i].find("UnknownContexts") == -1:
                 if (options.isRPGMakerV2()):
                     newFilesCorrected.append(path.join(folder, newFiles[i]))
                 else:
