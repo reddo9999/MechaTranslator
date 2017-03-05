@@ -309,6 +309,9 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
             if c.find("InlineScript") != -1 or c.find("> CONTEXT: Scripts/Window_nxt/") == 0 \
                     or c.find("> CONTEXT: Scripts/Window_MenuCommand/") == 0 or c.find("> CONTEXT: Scripts/Window_Base/") == 0:
                 return True
+            # Knights of the Phantasm
+            if c.find("Scripts/Window_Status★") != -1 or c.find("Scripts/Window_MenuStatus★") != -1:
+                return True
         return False
 
     def isVocabulary (self):
