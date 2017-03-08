@@ -312,6 +312,9 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
             # Knights of the Phantasm
             if c.find("Scripts/Window_Status★") != -1 or c.find("Scripts/Window_MenuStatus★") != -1:
                 return True
+            # XVI - Achievement Medals, Volume change screen
+            if c.find("Scripts/RGSS3_実績メダルEX") != -1 or c.find("Scripts/音量変更スクリプトさん") != -1:
+                return True
         return False
 
     def isVocabulary (self):
