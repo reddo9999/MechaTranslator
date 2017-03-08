@@ -356,7 +356,8 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
             if (c.find("> CONTEXT") != -1 and c.find("/Picture") != -1) or \
                     (c.find("> CONTEXT") != -1 and c.find("/SetString") != -1) or \
                     (c.find("> CONTEXT") != -1 and c.find("/Database") != -1) or \
-                    (c.find("> CONTEXT") != -1 and c.find("/StringCondition") != -1):
+                    (c.find("> CONTEXT") != -1 and c.find("/StringCondition") != -1) or \
+                    (c.find("Scripts/Cache") != -1) or (c.find("Scripts/Window_NameInput") != -1):
                 return True
         return False
 
