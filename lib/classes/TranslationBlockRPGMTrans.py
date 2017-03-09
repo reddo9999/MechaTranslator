@@ -315,6 +315,9 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
             # XVI - Achievement Medals, Volume change screen
             if c.find("Scripts/RGSS3_実績メダルEX") != -1 or c.find("Scripts/音量変更スクリプトさん") != -1:
                 return True
+            #RJ194683
+            if c.find("Scripts/設定項目") != -1 or c.find("Scripts/ショップ在庫数設定") != -1:
+                return True
         return False
 
     def isVocabulary (self):
