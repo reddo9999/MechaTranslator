@@ -59,14 +59,13 @@ if __name__ == '__main__':
 
     file = fileLoader.getFile()
     options = TranslationOptions()
-    options.askOptions()
-
     if basename(file) == "RPGMKTRANSPATCH":
         options.setRPGMakerTrans()
     elif basename(file) == "GameDat.txt":
         options.setWolf()
     elif basename(file) == "package.json":
         options.setRPGMakerMV()
+    options.askOptions()
 
     files = fileLoader.getFiles(file, options)
 
