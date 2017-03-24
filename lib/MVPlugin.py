@@ -3,8 +3,8 @@ import os.path as path
 import os
 import codecs
 filename = "MechaWrap"
-mechaWrapCommand = "<MECHAWRAP>"
-mechaWrapBreak = "<MECHABR>"
+mechaWrapCommand = "<wrap>"
+mechaWrapBreak = "<br>"
 pluginPush = """$plugins.push({"name":"MechaWrap","status":true,"description":"v1.0.0 This plugin provides word wrap feature, so that a long text will be properly broken down into lines.","parameters":{}})"""
 
 def addPlugin (mainFile):
@@ -121,7 +121,7 @@ mechaWrapPluginJs = """/*:
 
         if (!!this._yamiWordWrap) {
             text = text.replace(/[\\n\\r]+/g, '')
-            text = text.replace(/<MECHABR>/gi, '\\n')
+            text = text.replace(/<br>/gi, '\\n')
         }
 
         return text
@@ -131,7 +131,7 @@ mechaWrapPluginJs = """/*:
         this._yamiWordWrap = false
         this._breakWord = false
 
-        if (!!text.match(/<MECHAWRAP>/i)) {
+        if (!!text.match(/<wrap>/i)) {
             this._yamiWordWrap = true
         }
 
@@ -139,7 +139,7 @@ mechaWrapPluginJs = """/*:
             this._breakWord = true
         }
 
-        text = text.replace(/<MECHAWRAP>/gi, '')
+        text = text.replace(/<wrap>/gi, '')
         text = text.replace(/<breakword>/gi, '')
 
         return text
