@@ -69,3 +69,6 @@ class TranslationBlockBase (object):
         #print ("Unrecognized context: " + str(self.contexts))
         self.contextNotFound = True
         return td._CONTEXT_NOT_FOUND
+
+    def isGoogleTranslated (self):
+        return False

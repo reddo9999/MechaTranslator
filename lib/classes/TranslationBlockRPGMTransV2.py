@@ -54,3 +54,9 @@ class TranslationBlockRPGMTransV2 (TranslationBlockRPGMTrans):
             self.translatedLines.extend(self.cleanUpString(s))
         self.translatedLines.extend(self.finalLines)
         self.translatedLines.append("")
+
+    def isGoogleTranslated (self):
+        if self.options['googleNames'] or self.options['googleAll']:
+            if self.isNames() or self.options['googleAll']:
+                return True
+        return False

@@ -373,3 +373,9 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
 
     def isDescription(self):
         return self.isActorDescription() or self.isItemDescription() or self.isSkillDescription()
+
+    def isGoogleTranslated (self):
+        if self.options['googleNames'] or self.options['googleAll']:
+            if self.isNames() or self.options['googleAll']:
+                return True
+        return False

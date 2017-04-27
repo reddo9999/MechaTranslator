@@ -1,4 +1,6 @@
 from . import habisainAtlas
+from ..mtranslate import translate as mtranslate
+from time import sleep
 
 class TranslationEngine (object):
     # TranslationEngine simply holds an ATLASTranslator object and interacts with a TranslationDictionary before actually translating
@@ -8,7 +10,12 @@ class TranslationEngine (object):
 
     def translate (self, text, block = None):
         # Translates text through ATLAS
-        trans = self.atlas.translate(text)
+        if block.isGoogleTranslated():
+            trans = mtranslate(text, "en", "ja")
+            print (trans)
+            sleep(2)
+        else:
+            trans = self.atlas.translate(text)
         return trans
 
     def hasTranslation (self, text, block):

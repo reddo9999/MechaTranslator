@@ -80,7 +80,7 @@ if __name__ == '__main__':
     if options.isWolf() or options.isRPGMakerTrans() or options.isRPGMakerV2():
         current = 1
         for f in files:
-            characterCount += fileTranslator.translateFile(f, optionsDict, inputList, output, inputSemaphore, outputSemaphore, current, totalFiles, unknownContexts)
+            characterCount += fileTranslator.translateFile(f, optionsDict, inputList, output, inputSemaphore, outputSemaphore, current, totalFiles, unknownContexts, dic)
             current += 1
     elif options.isRPGMakerMV():
         current = 1

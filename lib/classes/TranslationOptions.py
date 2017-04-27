@@ -14,6 +14,8 @@ class TranslationOptions(object):
         self.angryContexts = True
         self.type = _RPGMAKERTRANS
         self.mvAddWrapPlugin = True
+        self.googleNames = True
+        self.googleAll = False
 
     def updateTo (self, d):
         # Updates dictionary d with self values
@@ -35,6 +37,8 @@ class TranslationOptions(object):
         self.angryContexts = input("Translate unknown/unhandled contexts? (Y/N): ").lower() == "y"
         self.keepEmptyLines = input("Maintain empty lines on translations? (Y/N): ").lower() != "n"
         if self.isRPGMakerTrans():
+            self.googleNames = input("Translate Names through Google? (Y/N): ").lower() != "n"
+            self.googleAll = input("Translate Everything through Google? (Y/N): ").lower() == "y"
             self.translateScripts = input("Translate Scripts.txt? (Y/N): ").lower() != "n"
             self.translateActors = input("Translate Actors.txt? (Y/N): ").lower() != "n"
             self.translateInlineScripts = input("Translate InlineScripts? (Y/N): ").lower() != "n"

@@ -24,6 +24,10 @@ class TranslationDictionary (object):
         contextedDict = self.dicts[context]
         contextedDict[originalSentence] = translatedSentence + machineTranslatorTag()
 
+    def addGoogleTranslation (self, context, originalSentence, translatedSentence):
+        contextedDict = self.dicts[context]
+        contextedDict[originalSentence] = translatedSentence
+
     def hasTranslation (self, context, originalSentence):
         # Checks context dictionary for originalSentence, returns boolean regarding it being found
         if originalSentence in self.dicts['0Level']:

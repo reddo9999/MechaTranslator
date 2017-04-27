@@ -5,8 +5,13 @@ from .classes.TranslationBlockRPGMTrans import TranslationBlockRPGMTrans
 from .classes.TranslationBlockRPGMTransV2 import TranslationBlockRPGMTransV2
 from .classes import TranslationOptions
 from time import sleep
+from .classes.TranslationEngine import TranslationEngine
+from .classes.TranslationDictionary import TranslationDictionary
 
-def translateFile (filename, options, input, output, inputSemaphore, outputSemaphore, progress, total, unknownContexts):
+def translateFile (filename, options, input, output, inputSemaphore, outputSemaphore, progress, total, unknownContexts, dictionary):
+    dic = TranslationDictionary(dictionary)
+    translationEngine = TranslationEngine(dic)
+
     isScripts = basename(filename).find("Scripts") != -1
     isActors = basename(filename).find("Actors") != -1
     if isScripts and not options['translateScripts']:
@@ -28,12 +33,16 @@ def translateFile (filename, options, input, output, inputSemaphore, outputSemap
                 translationBlock = TranslationBlockRPGMTrans(options, isScripts, count)
             for line in lines:
                 if translationBlock.addLine(line) == 1:
-                    try:
-                        input.append(translationBlock)
-                        inputSemaphore.release()
-                    except Exception as e:
-                        print ("Unable to feed queue for " + basename(filename) + ": " + str(e))
-                    count+=1
+                    if translationBlock.isGoogleTranslated():
+                        translationBlock.translate(translationEngine)
+                        output.append(translationBlock)
+                    else:
+                        try:
+                            input.append(translationBlock)
+                            inputSemaphore.release()
+                        except Exception as e:
+                            print ("Unable to feed queue for " + basename(filename) + ": " + str(e))
+                        count+=1
                     if options['type'] == TranslationOptions._RPGMAKERV2:
                         translationBlock = TranslationBlockRPGMTransV2(options, isScripts, count)
                     else:
