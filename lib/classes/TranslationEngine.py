@@ -1,6 +1,7 @@
 from . import habisainAtlas
 from ..mtranslate import translate as mtranslate
 from time import sleep
+from .. import kataKatcher
 
 class TranslationEngine (object):
     # TranslationEngine simply holds an ATLASTranslator object and interacts with a TranslationDictionary before actually translating
@@ -10,7 +11,7 @@ class TranslationEngine (object):
 
     def translate (self, text, block = None):
         # Translates text through ATLAS
-        if block.isGoogleTranslated():
+        if block.isGoogleTranslated() and kataKatcher.searchAnyJapanese(text):
             trans = mtranslate(text, "en", "ja")
             print (trans)
             sleep(2)
