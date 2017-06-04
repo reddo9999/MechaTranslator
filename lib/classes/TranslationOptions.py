@@ -14,7 +14,7 @@ class TranslationOptions(object):
         self.angryContexts = True
         self.type = _RPGMAKERTRANS
         self.mvAddWrapPlugin = True
-        self.googleNames = True
+        self.googleNames = False
         self.googleAll = False
 
     def updateTo (self, d):
@@ -37,7 +37,7 @@ class TranslationOptions(object):
         self.angryContexts = input("Translate unknown/unhandled contexts? (Y/N): ").lower() == "y"
         self.keepEmptyLines = input("Maintain empty lines on translations? (Y/N): ").lower() != "n"
         if self.isRPGMakerTrans():
-            self.googleNames = input("Translate Names through Google? (Y/N): ").lower() != "n"
+            self.googleNames = input("Translate Names through Google? (Y/N): ").lower() == "y"
             self.googleAll = input("Translate Everything through Google? (Y/N): ").lower() == "y"
             self.translateScripts = input("Translate Scripts.txt? (Y/N): ").lower() != "n"
             self.translateActors = input("Translate Actors.txt? (Y/N): ").lower() != "n"
@@ -46,6 +46,8 @@ class TranslationOptions(object):
             print("RPG Maker is usually able to show 52 characters if not showing a face or 42 otherwise.")
             print("This can change if the game uses a different font or resolution.")
         elif self.isWolf():
+            self.googleNames = input("Translate Names through Google? (Y/N): ").lower() == "y"
+            self.googleAll = input("Translate Everything through Google? (Y/N): ").lower() == "y"
             print("Wolf RPG can usually show up to 62 characters without faces.")
         try:
             self.maxLength = int(input("Amount of characters per line: "))
