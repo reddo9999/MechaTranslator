@@ -11,7 +11,7 @@ class TranslationEngine (object):
 
     def translate (self, text, block = None):
         # Translates text through ATLAS
-        if block.isGoogleTranslated() and kataKatcher.searchAnyJapanese(text):
+        if block != None and block.isGoogleTranslated() and kataKatcher.searchAnyJapanese(text):
             trans = mtranslate(text, "en", "ja")
             print (trans)
             sleep(2)

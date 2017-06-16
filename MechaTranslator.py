@@ -105,6 +105,8 @@ if __name__ == '__main__':
 
     if len(unknownContexts) > 0:
         if input(str(len(unknownContexts)) + " blocks had unknown contexts. Save unknown contexts to file? (Y/N): ").lower() != "n":
+            translationDic = TranslationDictionary(dic)
+            translationEngine = TranslationEngine(translationDic)
             folder = path.abspath(path.dirname(file))
             contextDictionary = {}
             for block in unknownContexts:
@@ -116,9 +118,14 @@ if __name__ == '__main__':
             for idx, val in contextDictionary.items():
                 strings.extend(val)
                 strings.append(idx)
+                strings.append(translationEngine.translate(idx))
                 strings.append("")
                 strings.append("")
-            with open(path.join(folder, ("UnknownContexts.txt")), "w", encoding="utf-8") as f:
+            if options.isWolf():
+                contextsFile = path.join(path.join(path.join(folder, ".."), ".."), ("UnknownContexts.txt"))
+            else:
+                contextsFile = path.join(folder, ("UnknownContexts.txt"))
+            with open(contextsFile, "w", encoding="utf-8") as f:
                 f.write("\n".join(strings))
                 f.close()
 

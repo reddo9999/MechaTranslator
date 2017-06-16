@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 """
+Reddo edits: removed ifs for older pythons
+
 MIT License
 
 Copyright (c) 2016 Arnaud Aliès
@@ -28,14 +30,9 @@ SOFTWARE.
 import sys
 import re
 
-if (sys.version_info[0] < 3):
-    import urllib2
-    import urllib
-    import HTMLParser
-else:
-    import html.parser
-    import urllib.request
-    import urllib.parse
+import html.parser
+import urllib.request
+import urllib.parse
 
 agent = {'User-Agent':
 "Mozilla/4.0 (\
@@ -50,10 +47,7 @@ SV1;\
 
 
 def unescape(text):
-    if (sys.version_info[0] < 3):
-        parser = HTMLParser.HTMLParser()
-    else:
-        parser = html.parser.HTMLParser()
+    parser = html.parser.HTMLParser()
     return (parser.unescape(text))
 
 
@@ -68,16 +62,10 @@ def translate(to_translate, to_language="auto", from_language="auto"):
     hello you alright?
     """
     base_link = "http://translate.google.com/m?hl=%s&sl=%s&q=%s"
-    if (sys.version_info[0] < 3):
-        to_translate = urllib.quote_plus(to_translate)
-        link = base_link % (to_language, from_language, to_translate)
-        request = urllib2.Request(link, headers=agent)
-        raw_data = urllib2.urlopen(request).read()
-    else:
-        to_translate = urllib.parse.quote(to_translate)
-        link = base_link % (to_language, from_language, to_translate)
-        request = urllib.request.Request(link, headers=agent)
-        raw_data = urllib.request.urlopen(request).read()
+    to_translate = urllib.parse.quote(to_translate)
+    link = base_link % (to_language, from_language, to_translate)
+    request = urllib.request.Request(link, headers=agent)
+    raw_data = urllib.request.urlopen(request).read()
     data = raw_data.decode("utf-8")
     expr = r'class="t0">(.*?)<'
     re_result = re.findall(expr, data)
