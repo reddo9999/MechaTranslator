@@ -318,6 +318,9 @@ class TranslationBlockRPGMTrans (TranslationBlockBase):
             #RJ194683
             if c.find("Scripts/設定項目") != -1 or c.find("Scripts/ショップ在庫数設定") != -1 or c.find("Scripts/オプション") != -1 or c.find("Scripts/Window_HinminOption") != -1 or c.find("Scripts/Game_Hinmin") != -1:
                 return True
+            #Vera
+            if c.find("Scripts/冒険メモ") != -1:
+                return True
             #Crotch new game
             # Villager's Tweets, Status Screen
             if c.find("Scripts/村人のつぶやき") != -1 or c.find("Scripts/オシブ様ステータス画面変更/") != -1:
